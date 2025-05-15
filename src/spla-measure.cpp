@@ -110,7 +110,7 @@ auto parseGraphPaths(int argc, char **argv) {
     }
   }
 
-  if (!graphStarts || graphPaths.empty())
+  if (graphStarts && graphPaths.empty())
     throw std::invalid_argument("Zero graphs were passed");
   return graphPaths;
 }
@@ -120,16 +120,15 @@ void registerBenchmark(const std::string prefix, Fun fun,
                        std::filesystem::path graphPath) {
   auto name = prefix + graphPath.filename().string();
   benchmark::RegisterBenchmark(name, fun, graphPath)
-      ->Iterations(1)
-      ->Repetitions(3);
+      ->Iterations(1);
 }
 
 int main(int argc, char **argv) {
   auto graphPaths = parseGraphPaths(argc, argv);
 
   for (auto &path : graphPaths) {
-    registerBenchmark("Burkhardt_", bmSplaBurkhardt, path);
-    registerBenchmark("Sandia_", bmSplaSandia, path);
+    registerBenchmark("Burkhardt/", bmSplaBurkhardt, path);
+    registerBenchmark("Sandia/", bmSplaSandia, path);
   }
 
   splaSetUp();

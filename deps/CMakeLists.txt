@@ -1,7 +1,7 @@
 if (ENABLE_SPLA)
     set(SPLA_BUILD_TESTS OFF)
     set(SPLA_BUILD_EXAMPLES OFF)
-    add_subdirectory(spla)
+    add_subdirectory(spla EXCLUDE_FROM_ALL)
 endif ()
 
 if (ENABLE_GUNROCK)
@@ -10,7 +10,7 @@ if (ENABLE_GUNROCK)
     list(APPEND CMAKE_MODULE_PATH
             "${CMAKE_CURRENT_SOURCE_DIR}/gunrock/externals/cmake_modules-src/"
     )
-    add_subdirectory(gunrock)
+    add_subdirectory(gunrock EXCLUDE_FROM_ALL)
 endif ()
 
 include(FetchContent)
@@ -21,5 +21,6 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/google/benchmark
         GIT_TAG v1.9.3
         OVERRIDE_FIND_PACKAGE
+        EXCLUDE_FROM_ALL
 )
 find_package(benchmark REQUIRED)

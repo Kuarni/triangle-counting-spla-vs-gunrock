@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(spla-gunrock-graph-analysis LANGUAGES CXX CUDA)
+project(spla-gunrock-graph-analysis LANGUAGES CXX C CUDA)
 
 set(CMAKE_CXX_STANDARD 17)
 
