@@ -17,15 +17,27 @@ The implementations are in C++ (with Python scripts for automation) and are buil
 ```
 
 ## Dependencies
-- CMake (≥ 3.10)
+- CMake (≥ 3.30)
 - C++17 compiler (GCC, Clang)
 - CUDA Toolkit (for Gunrock)
 - Python 3.7+ (for scripts in `scripts/`)
 
-## Run
+## Build Options
+The project uses CMake for build configuration with two main options:
+- `ENABLE_GUNROCK`: Enables building and benchmarking Gunrock (default: ON)
+- `ENABLE_SPLA`: Enables building and benchmarking SPLA (default: ON)
+
+## Build & Run
 ```bash
 git clone --recurse-submodules https://github.com/Kuarni/triangle-counting-spla-vs-gunrock.git
 python3 scripts/run_all_and_analyze.py
+```
+
+### Run benchmark with specific params
+```bash
+python3 scripts/download.py
+python3 scripts/build.py
+bin/spla-measure [google benchmark params] --graphs [graphs paths]
 ```
 
 ## Graph Datasets
@@ -50,6 +62,7 @@ The analysis framework compares SPLA and Gunrock triangle counting graph algorit
 - SPLA based **Burkhardt** 
 - **Sandia** from SPLA (named `tc`) 
 
+For SPLA, matrices are stored in AccCSR format for optimized performance.
 
 ## Test Environment
 All benchmarks in this repository were performed on the following hardware and software configuration:
@@ -60,6 +73,8 @@ All benchmarks in this repository were performed on the following hardware and s
 - **Operating System**: Windows 10 22H2
 
 ## Benchmark Results on This Test Stand
+
+Each algorithm was run 30 times to ensure statistical significance.
 
 ### Execution Time Comparison
 ![Execution Time Comparison](results/bench_graphic.png)
