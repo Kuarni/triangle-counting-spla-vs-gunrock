@@ -106,7 +106,7 @@ def check_triangles_consistency(df: pd.DataFrame):
         )
 
 def analyze():
-    data_file = Path('results/bench_result.json')
+    data_file = Path('results/spla_bench_result.json')
     df = load_data(data_file)
     check_triangles_consistency(df)
     stats_df = compute_stats(df)

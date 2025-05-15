@@ -7,7 +7,7 @@ iterations = 30
 os_postfix = ".exe" if os.name == "nt" else ""
 graphs_dir = Path("graphs")
 benchExe = Path("bin/spla-measure" + os_postfix)
-params = ["--benchmark_out=results/bench_result.json", "--benchmark_out_format=json",
+params = ["--benchmark_out=results/spla_bench_result.json", "--benchmark_out_format=json",
           f"--benchmark_repetitions={iterations}"]
 
 
