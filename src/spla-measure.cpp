@@ -32,6 +32,8 @@ auto loadGraph(std::filesystem::path path, bool trilingual = false) {
 
   auto matrix = spla::Matrix::make(maxRow + 1, maxCol + 1, spla::INT);
   for (auto [row, col] : data) {
+    if (row == col) continue;
+
     if (!trilingual) {
       matrix->set_int(row, col, 1);
       matrix->set_int(col, row, 1);

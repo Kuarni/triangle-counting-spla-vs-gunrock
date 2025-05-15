@@ -2,9 +2,6 @@ import os
 import subprocess
 from pathlib import Path
 
-from build import build
-from download import download
-
 iterations = 30
 
 os_postfix = ".exe" if os.name == "nt" else ""
@@ -15,9 +12,6 @@ params = ["--benchmark_out=results/bench_result.json", "--benchmark_out_format=j
 
 
 def bench():
-    download()
-    build()
-
     graphs = [f for f in graphs_dir.iterdir() if f.is_file()]
     graphs_for_bench = [str(fi.absolute()) for fi in graphs]
     cmd = subprocess.run([str(benchExe), *params, "--graphs", *graphs_for_bench])
