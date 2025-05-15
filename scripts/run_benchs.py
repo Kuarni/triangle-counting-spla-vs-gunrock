@@ -5,12 +5,13 @@ from pathlib import Path
 from build import build
 from download import download
 
-iterations = 3
+iterations = 30
 
 os_postfix = ".exe" if os.name == "nt" else ""
 graphs_dir = Path("graphs")
 benchExe = Path("bin/spla-measure" + os_postfix)
-params = ["--benchmark_out=bench_result.json", "--benchmark_out_format=json", f"--benchmark_repetitions={iterations}"]
+params = ["--benchmark_out=results/bench_result.json", "--benchmark_out_format=json",
+          f"--benchmark_repetitions={iterations}"]
 
 
 def bench():
