@@ -2,7 +2,7 @@ import subprocess
 import os
 
 def build():
-    extra_options = ["-DCMAKE_BUILD_TYPE=Release", "-DENABLE_GUNROCK=OFF"]
+    extra_options = ["-DCMAKE_BUILD_TYPE=Release"]
 
     if (os.name == "nt"):
         extra_options.append("-G Visual Studio 17 2022")

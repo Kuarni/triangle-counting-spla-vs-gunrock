@@ -6,5 +6,5 @@ from run_benchs import *
 if __name__ == '__main__':
     download()
     build()
-    bench()
-    analyze()
+    bench_all()
+    analyze('results/spla_bench_result.json', 'results/gunrock_bench_result.json')
