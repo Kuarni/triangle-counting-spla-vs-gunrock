@@ -2,6 +2,9 @@
 #include <fstream>
 #include <spla.hpp>
 #include <string>
+#include <utility>
+
+#include "common.hpp"
 
 void splaSetUp() {
   spla::Library *library = spla::Library::get();
@@ -14,25 +17,12 @@ void splaSetUp() {
 void splaTeardown() { spla::Library::get()->finalize(); }
 
 auto loadGraph(std::filesystem::path path, bool trilingual = false) {
-  auto fstream = std::ifstream{path};
-  auto data = std::vector<std::pair<int, int>>{};
-  auto maxRow = 0;
-  auto maxCol = 0;
-  while (!fstream.eof()) {
-    if (fstream.peek() == '#') {
-      fstream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      continue;
-    }
-    int row, col;
-    fstream >> row >> col;
-    maxRow = std::max(maxRow, row);
-    maxCol = std::max(maxCol, col);
-    data.emplace_back(row, col);
-  }
+  auto [data, maxRow, maxCol] = loadMatrixAsVector(std::move(path));
 
   auto matrix = spla::Matrix::make(maxRow + 1, maxCol + 1, spla::INT);
   for (auto [row, col] : data) {
-    if (row == col) continue;
+    if (row == col)
+      continue;
 
     if (!trilingual) {
       matrix->set_int(row, col, 1);
@@ -100,43 +90,18 @@ static void bmSplaBurkhardt(benchmark::State &state,
   state.counters["status"] = static_cast<int>(status);
 }
 
-auto parseGraphPaths(int argc, char **argv) {
-  std::string paramName = "--graphs";
-  auto graphStarts = false;
-  auto graphPaths = std::vector<std::filesystem::path>{};
-  for (int i = 1; i < argc; i++) {
-    if (graphStarts) {
-      graphPaths.emplace_back(argv[i]);
-    } else {
-      graphStarts = paramName == argv[i];
-    }
-  }
-
-  if (graphStarts && graphPaths.empty())
-    throw std::invalid_argument("Zero graphs were passed");
-  return graphPaths;
-}
-
-template <typename Fun>
-void registerBenchmark(const std::string prefix, Fun fun,
-                       std::filesystem::path graphPath) {
-  auto name = prefix + graphPath.filename().string();
-  benchmark::RegisterBenchmark(name, fun, graphPath)
-      ->Iterations(1);
-}
-
 int main(int argc, char **argv) {
   auto graphPaths = parseGraphPaths(argc, argv);
 
   for (auto &path : graphPaths) {
-    registerBenchmark("Burkhardt/", bmSplaBurkhardt, path);
-    registerBenchmark("Sandia/", bmSplaSandia, path);
+    registerBenchmark("SPLA_Burkhardt/", bmSplaBurkhardt, path);
+    registerBenchmark("SPLA_Sandia/", bmSplaSandia, path);
   }
 
   splaSetUp();
 
   benchmark::Initialize(&argc, argv);
-  benchmark::SetDefaultTimeUnit(benchmark::kMicrosecond);
+  benchmark::SetDefaultTimeUnit(benchmark::kMillisecond);
   benchmark::RunSpecifiedBenchmarks();
 
   splaTeardown();
