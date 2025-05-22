@@ -6,9 +6,13 @@
 
 #include "common.hpp"
 
-void splaSetUp() {
+void splaSetUp(int platform) {
   spla::Library *library = spla::Library::get();
   std::string acc_info;
+  library->set_accelerator(spla::AcceleratorType::OpenCL);
+  if (platform != -1)
+    library->set_platform(platform);
+  library->set_device(0);
   library->get_accelerator_info(acc_info);
   std::cout << "env: " << acc_info << std::endl;
   library->set_force_no_acceleration(false);
@@ -90,15 +94,43 @@ static void bmSplaBurkhardt(benchmark::State &state,
   state.counters["status"] = static_cast<int>(status);
 }
 
+int getPlatform(int argc, char **argv) {
+  auto find = false;
+  for (auto i = 1; i < argc; i++) {
+    if (find)
+      return std::stoi(argv[i]);
+    if (std::string_view("--platform") == argv[i])
+      find = true;
+  }
+
+  return -1;
+}
+
+std::string getExtraNamer(int argc, char **argv) {
+  auto find = false;
+  for (auto i = 1; i < argc; i++) {
+    if (find)
+      return argv[i];
+    if (std::string_view("--extra-name") == argv[i])
+      find = true;
+  }
+
+  return {};
+}
+
 int main(int argc, char **argv) {
   auto graphPaths = parseGraphPaths(argc, argv);
 
+  auto getExtraName = getExtraNamer(argc, argv);
+
   for (auto &path : graphPaths) {
-    registerBenchmark("SPLA_Burkhardt/", bmSplaBurkhardt, path);
-    registerBenchmark("SPLA_Sandia/", bmSplaSandia, path);
+    registerBenchmark(getExtraName + "SPLA_Burkhardt/", bmSplaBurkhardt, path);
+    registerBenchmark(getExtraName + "SPLA_Sandia/", bmSplaSandia, path);
   }
 
-  splaSetUp();
+  auto platform = getPlatform(argc, argv);
+
+  splaSetUp(platform);
 
   benchmark::Initialize(&argc, argv);
   benchmark::SetDefaultTimeUnit(benchmark::kMillisecond);
