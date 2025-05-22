@@ -1,0 +1,11 @@
+graph,triangles,Gunrock tc,SPLA Burkhardt,SPLA Sandia
+amazon0302,717719,18.7,42.5,25.8
+amazon0505,3951063,155.0,134.5,59.6
+email-EuAll,267313,73.1,53.4,11.7
+loc-brightkite_edges,494728,43.4,30.0,8.0
+loc-gowalla_edges,2273138,223.3,341.2,34.3
+roadNet-PA,67150,12.7,80.1,49.8
+soc-Epinions1,1624481,97.5,59.9,12.6
+soc-Slashdot0811,551724,92.4,82.1,11.7
+soc-Slashdot0902,602592,102.5,80.6,24.5
+two_triangle_graph,2,0.6,1.5,1.4
