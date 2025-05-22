@@ -124,14 +124,16 @@ def save_summary(stats_df: pd.DataFrame, out_dir: Path = Path("results")):
     ).reset_index()
     table.columns.name = None
 
+    algs = stats_df['algorithm'].unique()
+
     cols = ['graph', 'triangles'
-        , *stats_df['algorithm'].unique()]
+        , *algs]
     table = table[cols]
 
-    float_cols = [c for c in table.columns if c in stats_df['algorithm'].unique()]
+    float_cols = [c for c in table.columns if c in algs]
     table[float_cols] = table[float_cols].round(1)
 
-    csv_path = out_dir / "summary_table.csv"
+    csv_path = out_dir / f"{'_'.join(algs).replace(' ', '_')}_table.csv"
     table.to_csv(csv_path, index=False)
 
     print(f"Таблица сохранена в: {csv_path}")
