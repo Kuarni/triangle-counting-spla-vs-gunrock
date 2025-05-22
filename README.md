@@ -3,7 +3,7 @@
 ## Overview
 This repository implements and compares two GPU-based triangle counting algorithms:
 - **SPLA** – a generalized sparse linear algebra framework for multi-GPU computations.
-- **Gunrock** – a CUDA library for high-performance graph processing on GPUs. (don't implemented now)
+- **Gunrock** – a CUDA library for high-performance graph processing on GPUs.
 
 The implementations are in C++ (with Python scripts for automation) and are built using CMake.
 
@@ -36,8 +36,9 @@ python3 scripts/run_all_and_analyze.py
 ### Run benchmark with specific params
 ```bash
 python3 scripts/download.py
-python3 scripts/build.py
+python3 scripts/build.py spla gunrock
 bin/spla-measure [google benchmark params] --graphs [graphs paths]
+bin/gunrock-measure [google benchmark params] --graphs [graphs paths]
 ```
 
 ## Graph Datasets
@@ -60,7 +61,8 @@ The experiments use real-world graph datasets from the Stanford Network Analysis
 
 The analysis framework compares SPLA and Gunrock triangle counting graph algorithms:
 - SPLA based **Burkhardt** 
-- **Sandia** from SPLA (named `tc`) 
+- **Sandia** from SPLA (named `tc`)
+- Gunrock tc
 
 For SPLA, matrices are stored in AccCSR format for optimized performance.
 
@@ -77,4 +79,20 @@ All benchmarks in this repository were performed on the following hardware and s
 Each algorithm was run 30 times to ensure statistical significance.
 
 ### Execution Time Comparison
-![Execution Time Comparison](results/bench_graphic.png)
+![Execution Time Comparison](results/example_Gunrock_tc_SPLA_Burkhardt_SPLA_Sandia_bench.png)
+
+| graph                   | triangles | Gunrock tc | SPLA Burkhardt | SPLA Sandia |
+|-------------------------|-----------|------------|----------------|-------------|
+| amazon0302              |    717719 |       18.7 |           42.5 |        25.8 |
+| amazon0505              |   3951063 |      155.0 |          134.5 |        59.6 |
+| email-EuAll             |    267313 |       73.1 |           53.4 |        11.7 |
+| loc-brightkite_edges    |    494728 |       43.4 |           30.0 |         8.0 |
+| loc-gowalla_edges       |   2273138 |      223.3 |          341.2 |        34.3 |
+| roadNet-PA              |     67150 |       12.7 |           80.1 |        49.8 |
+| soc-Epinions1           |   1624481 |       97.5 |           59.9 |        12.6 |
+| soc-Slashdot0811        |    551724 |       92.4 |           82.1 |        11.7 |
+| soc-Slashdot0902        |    602592 |      102.5 |           80.6 |        24.5 |
+| two_triangle_graph      |         2 |        0.6 |            1.5 |         1.4 |
+
+
+
