@@ -96,3 +96,6 @@ Each algorithm was run 30 times to ensure statistical significance.
 
 
 
+## Bonus SPLA GPU vs SPLA Intel OpenCL Runtime
+
+![GPU vs OpenCL runtime](results/example_INTEL_OPENCL_RUNTIME_SPLA_Burkhardt_INTEL_OPENCL_RUNTIME_SPLA_Sandia_SPLA_Burkhardt_SPLA_Sandia_bench.png)
