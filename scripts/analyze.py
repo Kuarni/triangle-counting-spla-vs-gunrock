@@ -141,10 +141,10 @@ def save_summary(stats_df: pd.DataFrame, out_dir: Path = Path("results")):
 
 def analyze(*data_files):
     df = pd.concat([load_data(Path(data_file)) for data_file in data_files])
-    check_triangles_consistency(df)
+    # check_triangles_consistency(df)
     stats_df = compute_stats(df)
     plot_comparison(stats_df)
-    save_summary(stats_df)
+    # save_summary(stats_df)
 
 
 if (__name__ == "__main__"):

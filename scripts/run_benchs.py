@@ -9,7 +9,7 @@ os_postfix = ".exe" if os.name == "nt" else ""
 graphs_dir = Path("graphs")
 
 predefines = {
-    "spla_intel_opencl": ["--platform", "2", "--extra-name", "INTEL_OPENCL_RUNTIME_"]
+    "spla_intel_opencl": ["--platform", "1", "--extra-name", "INTEL_OPENCL_RUNTIME_"]
 }
 
 
